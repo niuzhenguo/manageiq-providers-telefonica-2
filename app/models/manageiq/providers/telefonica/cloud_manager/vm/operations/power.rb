@@ -1,11 +1,11 @@
 module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Power
-  def validate_shelve
-    validate_vm_control_shelve_action
-  end
+    def validate_shelve
+      validate_vm_control_shelve_action
+    end
 
-  def validate_shelve_offload
-    validate_vm_control_shelve_offload_action
-  end
+    def validate_shelve_offload
+      validate_vm_control_shelve_offload_action
+    end
 
   def raw_start
     with_provider_connection do |connection|
@@ -20,11 +20,17 @@ module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Power
   end
 
   def raw_stop
-    with_provider_connection { |connection| connection.stop_server(ems_ref) }
-    # Temporarily update state for quick UI response until refresh comes along
-    self.update_attributes!(:raw_power_state => "SHUTOFF")
+      with_provider_connection { |connection| connection.stop_server(ems_ref) }
+      # Temporarily update state for quick UI response until refresh comes along
+      self.update_attributes!(:raw_power_state => "SHUTOFF")
   end
 
+    #========================c2c
+    def raw_terminate
+      with_provider_connection { |connection| connection.delete_server(ems_ref) }
+      # Temporarily update state for quick UI response until refresh comes along
+    end
+    #========================c2c
   def raw_pause
     with_provider_connection { |connection| connection.pause_server(ems_ref) }
     # Temporarily update state for quick UI response until refresh comes along
