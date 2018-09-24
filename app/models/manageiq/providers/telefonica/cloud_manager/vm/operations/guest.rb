@@ -11,6 +11,11 @@ module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Guest
       unsupported_reason_add(:reset, unsupported_reason(:control)) unless supports_control?
       unsupported_reason_add(:reset, _("The VM is not powered on")) unless current_state == "on"
     end
+    
+    supports :vm_destroy do
+        unsupported_reason_add(:vm_destroy, unsupported_reason(:control)) unless supports_control?
+        raw_terminate
+    end
   end
 
   def raw_reboot_guest
