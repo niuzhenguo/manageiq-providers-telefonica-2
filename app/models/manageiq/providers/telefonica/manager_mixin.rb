@@ -19,6 +19,8 @@ module ManageIQ::Providers::Telefonica::ManagerMixin
       ems.api_version            = params[:api_version].strip
       ems.security_protocol      = params[:default_security_protocol].strip
       ems.keystone_v3_domain_id  = params[:keystone_v3_domain_id]
+      ems.domain_name            = params[:domain_name]
+      ems.project_name           = params[:project_name]
 
       user, hostname, port = params[:default_userid], params[:default_hostname].strip, params[:default_api_port].try(:strip)
 
@@ -80,6 +82,8 @@ module ManageIQ::Providers::Telefonica::ManagerMixin
       extra_options[:region]            = provider_region if provider_region.present?
       extra_options[:omit_default_port] = ::Settings.ems.ems_telefonica.excon.omit_default_port
       extra_options[:read_timeout]      = ::Settings.ems.ems_telefonica.excon.read_timeout
+      extra_options[:domain_name]       = domain_name if domain_name.present?
+      extra_options[:project_name]      = project_name if project_name.present?
 
       osh = TelefonicaHandle::Handle.new(username, password, address, port, api_version, security_protocol, extra_options)
       osh.connection_options = {:instrumentor => $fog_log}

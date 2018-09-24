@@ -3,7 +3,7 @@ require 'util/miq-exception'
 
 module TelefonicaHandle
   class Handle
-    attr_accessor :username, :password, :address, :port, :api_version, :security_protocol, :connection_options
+    attr_accessor :username, :password, :domain_name, :project_name, :address, :port, :api_version, :security_protocol, :connection_options
     attr_reader :project_name
     attr_writer   :default_tenant_name
 
@@ -46,25 +46,25 @@ module TelefonicaHandle
       end
     end
 
-    def self.raw_connect_try_ssl(username, password, address, port, service = "Compute", options = nil, api_version = nil,
+    def self.raw_connect_try_ssl(username, password, domain_name, project_name, address, port, service = "Compute", options = nil, api_version = nil,
                                  security_protocol = nil)
       opts = options.dup
       ssl_options = opts.delete(:ssl_options) || {}
       try_connection(security_protocol, ssl_options) do |scheme, connection_options|
         auth_url = auth_url(address, port, scheme, api_version)
         opts[:connection_options] = (opts[:connection_options] || {}).merge(connection_options)
-        raw_connect(username, password, auth_url, service, opts)
+        raw_connect(username, password, domain_name, project_name, auth_url, service, opts)
       end
     end
 
-    def self.raw_connect(username, password, auth_url, service = "Compute", extra_opts = nil)
+    def self.raw_connect(username, password, domain_name, project_name, auth_url, service = "Compute", extra_opts = nil)
       opts = {
         :provider                => 'Telefonica',
         :telefonica_auth_url      => auth_url,
         :telefonica_username      => username,
         :telefonica_api_key       => password,
-        :telefonica_domain_name   => 'Huawei China',
-        # :telefonica_project_name  => 'sa-brazil-1', # added by c2c Team 23-08-18 13:19 sa-brazil-1_c2c_miq
+        :telefonica_domain_name   => domain_name,
+        :telefonica_project_name   => project_name,
         :telefonica_endpoint_type => 'publicURL',
       }
       opts.merge!(extra_opts) if extra_opts
@@ -192,7 +192,7 @@ module TelefonicaHandle
         opts[:connection_options] = (connection_options || {}).merge(excon_options)
         opts[:ssl_options]        = ssl_options
 
-        raw_service = self.class.raw_connect_try_ssl(username, password, address, port, service, opts, api_version,
+        raw_service = self.class.raw_connect_try_ssl(username, password, domain_name, project_name, address, port, service, opts, api_version,
                                                      security_protocol)
 
         # need to check if this is versionless keystone endpoint
@@ -384,7 +384,7 @@ module TelefonicaHandle
     end
 
     def default_tenant_name
-      return @default_tenant_name ||= "sa-brazil-1" if tenant_accessible?("sa-brazil-1")
+      return @default_tenant_name ||= "admin" if tenant_accessible?("admin")
       tenant_names.each do |name|
         next if name == "services"
         return @default_tenant_name ||= name if tenant_accessible?(name)
