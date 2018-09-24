@@ -257,18 +257,6 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
     _log.error "vm=[#{vm.name}], error: #{err}"
   end
 
-  def vm_lock_guest(vm, _options = {})
-    vm.lock_guest
-  rescue => err
-    _log.error "vm=[#{vm.name}], error: #{err}"
-  end
-
-  def vm_unlock_guest(vm, _options = {})
-    vm.unlock_guest
-  rescue => err
-    _log.error "vm=[#{vm.name}], error: #{err}"
-  end
-
   def vm_reset(vm, _options = {})
     vm.reset
   rescue => err
