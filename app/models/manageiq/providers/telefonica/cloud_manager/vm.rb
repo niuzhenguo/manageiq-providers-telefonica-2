@@ -30,9 +30,6 @@ class ManageIQ::Providers::Telefonica::CloudManager::Vm < ManageIQ::Providers::C
     "REBUILD"           => "wait_for_launch",
     "DELETED"           => "terminated",
     "MIGRATING"         => "migrating",
-    "LOCKED"            => "locked",
-    "UNLOCKED"          => "unlocked",
-
   }.freeze
 
   alias_method :private_networks, :cloud_networks
