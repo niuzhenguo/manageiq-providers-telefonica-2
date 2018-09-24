@@ -48,4 +48,9 @@ module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Power
     # Temporarily update state for quick UI response until refresh comes along
     self.update_attributes!(:raw_power_state => "SHELVED_OFFLOADED")
   end
+  
+  def raw_terminate
+    with_provider_connection { |connection| connection.delete_server(ems_ref) }
+    # Temporarily update state for quick UI response until refresh comes along
+  end
 end
