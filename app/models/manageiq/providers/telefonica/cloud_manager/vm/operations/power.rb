@@ -25,12 +25,11 @@ module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Power
       self.update_attributes!(:raw_power_state => "SHUTOFF")
   end
 
-    #========================c2c
-    def raw_terminate
-      with_provider_connection { |connection| connection.delete_server(ems_ref) }
-      # Temporarily update state for quick UI response until refresh comes along
-    end
-    #========================c2c
+  def raw_terminate
+    with_provider_connection { |connection| connection.delete_server(ems_ref) }
+    # Temporarily update state for quick UI response until refresh comes along
+  end
+
   def raw_pause
     with_provider_connection { |connection| connection.pause_server(ems_ref) }
     # Temporarily update state for quick UI response until refresh comes along
