@@ -14,6 +14,7 @@ module ManageIQ::Providers::Telefonica::CloudManager::Vm::Operations::Power
       when "SUSPENDED"                    then connection.resume_server(ems_ref)
       when "SHUTOFF"                      then connection.start_server(ems_ref)
       when "SHELVED", "SHELVED_OFFLOADED" then connection.unshelve_server(ems_ref)
+      when "UNLOCKED"                     then connection.start_server(ems_ref)
       end
     end
     self.update_attributes!(:raw_power_state => "ACTIVE")
