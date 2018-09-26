@@ -4,7 +4,7 @@ module ManageIQ::Providers
       super
       EmsRefresh.queue_refresh(ems.network_manager) if target.kind_of?(ManageIQ::Providers::BaseManager)
       EmsRefresh.queue_refresh(ems.cinder_manager) if target.kind_of?(ManageIQ::Providers::BaseManager)
-      EmsRefresh.queue_refresh(ems.swift_manager) if target.kind_of?(ManageIQ::Providers::BaseManager)
+      #EmsRefresh.queue_refresh(ems.swift_manager) if target.kind_of?(ManageIQ::Providers::BaseManager)
     end
 
     def preprocess_targets

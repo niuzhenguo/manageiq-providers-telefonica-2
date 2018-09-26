@@ -32,7 +32,7 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
            :autosave    => true
 
   include ManageIQ::Providers::Telefonica::CinderManagerMixin
-  include SwiftManagerMixin
+  #include SwiftManagerMixin
   include ManageIQ::Providers::Telefonica::ManagerMixin
   include ManageIQ::Providers::Telefonica::IdentitySyncMixin
 
@@ -46,12 +46,12 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
     end
   end
   supports :cinder_service
-  supports :swift_service
+  #supports :swift_service
   supports :create_host_aggregate
 
   before_create :ensure_managers,
-                :ensure_cinder_managers,
-                :ensure_swift_managers
+                :ensure_cinder_managers
+                #:ensure_swift_managers
 
   before_update :ensure_managers_zone_and_provider_region
 
@@ -70,10 +70,10 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
       cinder_manager.provider_region = provider_region
     end
 
-    if swift_manager
-      swift_manager.zone_id         = zone_id
-      swift_manager.provider_region = provider_region
-    end
+    # if swift_manager
+    #   swift_manager.zone_id         = zone_id
+    #   swift_manager.provider_region = provider_region
+    # end
   end
 
   def ensure_network_manager
@@ -87,8 +87,8 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
   end
 
   def ensure_swift_manager
-    return false if swift_manager
-    build_swift_manager(:type => 'ManageIQ::Providers::StorageManager::SwiftManager')
+    # return false if swift_manager
+    # build_swift_manager(:type => 'ManageIQ::Providers::StorageManager::SwiftManager')
     true
   end
 
@@ -111,10 +111,10 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
     vs&.name == :cinder ? vs : nil
   end
 
-  def swift_service
-    vs = telefonica_handle.detect_storage_service
-    vs&.name == :swift ? vs : nil
-  end
+  # def swift_service
+  #   vs = telefonica_handle.detect_storage_service
+  #   vs&.name == :swift ? vs : nil
+  # end
 
   def self.ems_type
     @ems_type ||= "telefonica".freeze
@@ -181,9 +181,9 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
     telefonica_handle.detect_volume_service.name == :cinder
   end
 
-  def supports_swift_service?
-    telefonica_handle.detect_storage_service.name == :swift
-  end
+  # def supports_swift_service?
+  #   telefonica_handle.detect_storage_service.name == :swift
+  # end
 
   def supports_authentication?(authtype)
     supported_auth_types.include?(authtype.to_s)
@@ -406,9 +406,9 @@ class ManageIQ::Providers::Telefonica::CloudManager < ManageIQ::Providers::Cloud
       cloud_volume_snapshots.where.not(:status => "error").sum(:size).to_f
   end
 
-  def object_storage_disk_usage(swift_replicas = 1)
-    cloud_object_store_containers.sum(:bytes).to_f * swift_replicas
-  end
+  # def object_storage_disk_usage(swift_replicas = 1)
+  #   cloud_object_store_containers.sum(:bytes).to_f * swift_replicas
+  # end
 
   def self.display_name(number = 1)
     n_('Cloud Provider (Telefonica)', 'Cloud Providers (Telefonica)', number)
