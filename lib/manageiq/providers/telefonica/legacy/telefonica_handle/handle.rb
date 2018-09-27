@@ -158,6 +158,10 @@ module TelefonicaHandle
       @extra_options[:domain_id]
     end
 
+    def project_name
+      @extra_options[:project_name]
+    end
+
     def region
       @extra_options[:region]
     end
@@ -173,6 +177,7 @@ module TelefonicaHandle
       discover_tenants = opts.fetch(:discover_tenants, true)
       opts.delete(:discover_tenants)
       domain   = domain_id
+      project = project_name
 
       # Do not send auth_type to fog, it throws warning
       opts.delete(:auth_type)
@@ -186,6 +191,7 @@ module TelefonicaHandle
       opts[:telefonica_project_domain_id] = domain
       opts[:telefonica_user_domain_id]    = domain
       opts[:telefonica_region]            = region
+      opts[:telefonica_project_name]      = project
 
       svc_cache = (@connection_cache[service] ||= {})
       svc_cache[tenant] ||= begin
