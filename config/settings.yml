@@ -157,22 +157,6 @@
         :amqp_vhost: '/'
         :ceilometer:
           :event_types_regex: '\A(volume|snapshot|backup)'
-      :event_catcher_telefonica_infra:
-        :poll: 15.seconds
-        :topics:
-          :nova: notifications.*
-          :cinder: notifications.*
-          :glance: notifications.*
-          :heat: notifications.*
-          :ironic: notifications.*
-        :duration: 10.seconds
-        :capacity: 50
-        :amqp_port: 5672
-        :amqp_heartbeat: 30
-        :amqp_recovery_attempts: 4
-        :amqp_vhost: '/'
-        :ceilometer:
-          :event_types_regex: '\A(?!firewall|floatingip|gateway|net|port|router|subnet|security_group|vpn)'
       :event_catcher_telefonica_network:
         :poll: 15.seconds
         :topics:
@@ -189,11 +173,9 @@
     :queue_worker_base:
       :ems_metrics_collector_worker:
         :ems_metrics_collector_worker_telefonica: {}
-        :ems_metrics_collector_worker_telefonica_infra: {}
         :ems_metrics_collector_worker_telefonica_network: {}
         :ems_metrics_telefonica_default_service: "auto"
         :ems_metrics_gnocchi_granularity: 300
       :ems_refresh_worker:
         :ems_refresh_worker_telefonica: {}
-        :ems_refresh_worker_telefonica_infra: {}
         :ems_refresh_worker_telefonica_network: {}

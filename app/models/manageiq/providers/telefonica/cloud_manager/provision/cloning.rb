@@ -76,6 +76,7 @@ module ManageIQ::Providers::Telefonica::CloudManager::Provision::Cloning
       clone_options[:block_device_mapping_v2][0].delete(:size)
       clone_options[:block_device_mapping_v2][0][:destination_type] = "volume"
     end
+    clone_options.delete(:block_device_mapping_v2)
     source.with_provider_connection(connection_options) do |telefonica|
       instance = telefonica.servers.create(clone_options)
       return instance.id

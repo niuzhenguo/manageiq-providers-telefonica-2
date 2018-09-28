@@ -48,8 +48,6 @@ module ManageIQ::Providers
           orchestration_stack_type = case @ems
                                      when ManageIQ::Providers::Telefonica::CloudManager
                                        "ManageIQ::Providers::Telefonica::CloudManager::OrchestrationStack"
-                                     when ManageIQ::Providers::Telefonica::InfraManager
-                                       "ManageIQ::Providers::Telefonica::InfraManager::OrchestrationStack"
                                      else
                                        "OrchestrationStack"
                                      end
