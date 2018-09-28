@@ -108,7 +108,6 @@ module TelefonicaHandle
 
     def self.url(address, port = 5000, scheme = "http", path = "")
       URI::Generic.build(:scheme => scheme, :host => address, :path => path).to_s
-      #URI::Generic.build(:scheme => scheme, :host => address, :port => port.to_i, :path => path).to_s
     end
 
     class << self
